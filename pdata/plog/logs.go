@@ -55,6 +55,21 @@ func (ms Logs) LogRecordCount() int {
 	return logCount
 }
 
+// LogRecordCount calculates the total number of log records.
+func (ms Logs) LogRecordBytes() int {
+	logBytes := 0
+	rss := ms.ResourceLogs()
+	for i := 0; i < rss.Len(); i++ {
+		rs := rss.At(i)
+		ill := rs.ScopeLogs()
+		for i := 0; i < ill.Len(); i++ {
+			logs := ill.At(i)
+			logBytes += logs.orig.Size()
+		}
+	}
+	return logBytes
+}
+
 // ResourceLogs returns the ResourceLogsSlice associated with this Logs.
 func (ms Logs) ResourceLogs() ResourceLogsSlice {
 	return newResourceLogsSlice(&ms.getOrig().ResourceLogs, internal.GetLogsState(internal.Logs(ms)))
