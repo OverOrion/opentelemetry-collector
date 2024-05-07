@@ -71,4 +71,6 @@ retract v0.76.0 // Depends on retracted pdata v1.0.0-rc10 module
 
 replace go.opentelemetry.io/collector/config/configtelemetry => ../config/configtelemetry
 
+replace go.opentelemetry.io/collector/internal/obsreportconfig/obsmetrics => ../internal/obsreportconfig/obsmetrics
+
 replace go.opentelemetry.io/collector/internal/obsreportconfig => ../internal/obsreportconfig
