@@ -24,12 +24,14 @@ var tracesUnmarshaler = &ptrace.ProtoUnmarshaler{}
 type tracesRequest struct {
 	td     ptrace.Traces
 	pusher consumer.ConsumeTracesFunc
+	sizer  ptrace.Sizer
 }
 
 func newTracesRequest(td ptrace.Traces, pusher consumer.ConsumeTracesFunc) Request {
 	return &tracesRequest{
 		td:     td,
 		pusher: pusher,
+		sizer:  &ptrace.ProtoMarshaler{},
 	}
 }
 
@@ -63,7 +65,9 @@ func (req *tracesRequest) ItemsCount() int {
 	return req.td.SpanCount()
 }
 
-func (req *tracesRequest) BytesSize() int { return 0 }
+func (req *tracesRequest) BytesSize() int {
+	return req.sizer.TracesSize(req.td)
+}
 
 type traceExporter struct {
 	*baseExporter
