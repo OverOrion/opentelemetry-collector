@@ -97,7 +97,7 @@ func (rec *ObsReport) createOtelMetrics() error {
 	)
 	errors = multierr.Append(errors, err)
 
-	rec.acceptedSpansBytesHistogram, err = rec.meter.Int64Histogram(
+	rec.acceptedSpansBytesHistogram, err = rec.meter.Int64Counter(
 		obsmetrics.ReceiverMetricPrefix+obsmetrics.AcceptedLogRecordsBytesKey,
 		metric.WithDescription("Bytes of spans successfully pushed into the pipeline."),
 		metric.WithUnit("By"),
@@ -118,7 +118,7 @@ func (rec *ObsReport) createOtelMetrics() error {
 	)
 	errors = multierr.Append(errors, err)
 
-	rec.acceptedMetricPointsBytesHistogram, err = rec.meter.Int64Histogram(
+	rec.acceptedMetricPointsBytesHistogram, err = rec.meter.Int64Counter(
 		obsmetrics.ReceiverMetricPrefix+obsmetrics.AcceptedLogRecordsBytesKey,
 		metric.WithDescription("Bytes of metric points successfully pushed into the pipeline."),
 		metric.WithUnit("By"),
@@ -139,7 +139,7 @@ func (rec *ObsReport) createOtelMetrics() error {
 	)
 	errors = multierr.Append(errors, err)
 
-	rec.acceptedLogRecodsBytesHistogram, err = rec.meter.Int64Histogram(
+	rec.acceptedLogRecodsBytesHistogram, err = rec.meter.Int64Counter(
 		obsmetrics.ReceiverMetricPrefix+obsmetrics.AcceptedLogRecordsBytesKey,
 		metric.WithDescription("Bytes of log records successfully pushed into the pipeline."),
 		metric.WithUnit("By"),
