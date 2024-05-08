@@ -36,13 +36,13 @@ type ObsReport struct {
 	otelAttrs []attribute.KeyValue
 
 	acceptedSpansCounter               metric.Int64Counter
-	acceptedSpansBytesHistogram        metric.Int64Histogram
+	acceptedSpansBytesHistogram        metric.Int64Counter
 	refusedSpansCounter                metric.Int64Counter
 	acceptedMetricPointsCounter        metric.Int64Counter
-	acceptedMetricPointsBytesHistogram metric.Int64Histogram
+	acceptedMetricPointsBytesHistogram metric.Int64Counter
 	refusedMetricPointsCounter         metric.Int64Counter
 	acceptedLogRecordsCounter          metric.Int64Counter
-	acceptedLogRecodsBytesHistogram    metric.Int64Histogram
+	acceptedLogRecodsBytesHistogram    metric.Int64Counter
 	refusedLogRecordsCounter           metric.Int64Counter
 }
 
@@ -291,7 +291,7 @@ func (rec *ObsReport) endOp(
 
 func (rec *ObsReport) recordMetrics(receiverCtx context.Context, dataType component.DataType, numAccepted, bytesAccepted, numRefused int) {
 	var acceptedMeasure, refusedMeasure metric.Int64Counter
-	var accecptedBytesMeasure metric.Int64Histogram
+	var accecptedBytesMeasure metric.Int64Counter
 	switch dataType {
 	case component.DataTypeTraces:
 		acceptedMeasure = rec.acceptedSpansCounter
@@ -309,5 +309,5 @@ func (rec *ObsReport) recordMetrics(receiverCtx context.Context, dataType compon
 
 	acceptedMeasure.Add(receiverCtx, int64(numAccepted), metric.WithAttributes(rec.otelAttrs...))
 	refusedMeasure.Add(receiverCtx, int64(numRefused), metric.WithAttributes(rec.otelAttrs...))
-	accecptedBytesMeasure.Record(receiverCtx, int64(bytesAccepted), metric.WithAttributes(rec.otelAttrs...))
+	accecptedBytesMeasure.Add(receiverCtx, int64(bytesAccepted), metric.WithAttributes(rec.otelAttrs...))
 }
